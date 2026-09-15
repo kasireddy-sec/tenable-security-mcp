@@ -1,143 +1,112 @@
-# Tenable Security MCP
-
-**AI-Assisted Vulnerability Management with Claude Desktop**
-
-Tenable Security MCP is an MCP (Model Context Protocol) server that connects Claude Desktop with Tenable Nessus and security intelligence sources, enabling vulnerability management teams to interact with vulnerability data using natural language.
-
-Instead of manually switching between Nessus, CVE databases, EPSS, CISA KEV, and exploit intelligence sources, ask Claude:
-
-> "Prioritize the vulnerabilities in my latest Nessus scan using severity, CVSS, EPSS, CISA KEV and exploit intelligence."
-
-Claude uses the MCP tools to retrieve and correlate relevant information across all sources and provide a security-focused response.
+# 🔐 Tenable Security MCP
+## AI-Assisted Vulnerability Management with Claude Desktop
 
 ---
 
-## The Problem
+## 📋 Executive Summary
 
-Vulnerability Management analysts spend significant time in repetitive information gathering:
+**Tenable Security MCP** is a cutting-edge **Model Context Protocol (MCP) server** that unifies vulnerability management intelligence, enabling security teams to leverage AI for rapid threat prioritization and remediation planning.
 
+🎯 **Transform this:**
 ```
-Nessus → CVE → CVSS → EPSS → CISA KEV → Exploit Research → Risk Assessment → Prioritization
+Nessus → CVE → CVSS → EPSS → CISA KEV → Exploit Research → Risk Assessment
 ```
 
-This manual correlation across multiple disconnected systems delays decision-making and reduces remediation velocity.
+✨ **Into this:**
+```
+Claude Desktop → Tenable Security MCP → Unified Intelligence → Actionable Insights
+```
 
 ---
 
-## The Solution
+## 🎯 Core Capabilities
 
-Tenable Security MCP unifies the entire workflow:
+### 🔍 Nessus Operations
+- ✅ Retrieve server information and scan details
+- ✅ List, launch, and manage scans
+- ✅ Access granular host and vulnerability data
+- ✅ Manage policies, folders, and agent deployments
 
+### 🛡️ Vulnerability Intelligence
+- ✅ Enrich findings with CVE details (NVD)
+- ✅ Cross-reference CVSS scores & EPSS probabilities
+- ✅ Check CISA Known Exploited Vulnerabilities (KEV)
+- ✅ Aggregate public exploit and PoC intelligence
+
+### 📊 Risk Prioritization Engine
+Intelligent correlation across multiple signals:
+- 🔴 Nessus severity ratings
+- 📈 CVSS base & temporal scores
+- ⚡ EPSS exploitation probability
+- 🚨 CISA KEV status
+- 💣 Public exploit availability
+- 🏢 Asset context & criticality
+
+### 💬 Example Queries
 ```
-Claude Desktop
-    ↓
-Tenable Security MCP
-    ├── Nessus
-    ├── NVD / CVE Intelligence
-    ├── CISA KEV
-    ├── EPSS
-    └── Exploit Intelligence
-    ↓
-Correlated Intelligence → Actionable Insights
-```
-
-**Result**: Vulnerability analysts spend more time on validation and remediation decisions, less time on data collection.
-
----
-
-## What It Can Do
-
-### Nessus Operations
-- Retrieve server information and scan details
-- List and launch scans
-- Access host and vulnerability data
-- Manage policies, folders, and agents
-
-### Vulnerability Intelligence
-- Enrich Nessus findings with CVE details
-- Cross-reference CVSS scores and EPSS probabilities
-- Check CISA Known Exploited Vulnerabilities status
-- Aggregate public exploit and PoC intelligence
-
-### Risk Prioritization
-Combine multiple signals for intelligent prioritization:
-- Nessus severity
-- CVSS score
-- EPSS probability
-- CISA KEV status
-- Exploit availability
-- Affected assets and context
-
-### Example Queries
-```
-"List vulnerabilities from my latest Nessus scan"
-"Show all critical findings and affected hosts"
-"Which vulnerabilities require urgent remediation?"
+"Analyze my latest scan and list critical findings"
 "Get complete intelligence for CVE-2024-3094"
+"Which vulnerabilities require urgent remediation?"
 "Prioritize findings using severity, CVSS, EPSS, and exploit data"
+"Create a remediation roadmap for high-risk assets"
 ```
 
 ---
 
-## Architecture
+## 🏗️ Architecture Overview
 
-**Local Nessus Deployment**
+### 🔗 Integration Model
 ```
-Claude Desktop ─── MCP ─── Tenable Security MCP ─── HTTPS/REST ─── Nessus (localhost:8834)
-```
-
-**Intelligence Enrichment**
-```
-Nessus Finding
-    ↓
-CVE Identified
-    ├── NVD (CVSS)
-    ├── EPSS (Exploit Probability)
-    ├── CISA KEV (Known Exploitation)
-    └── Exploit Intelligence
-    ↓
-Security Context + Risk Score
-    ↓
-Claude Response
+┌─────────────────────────────────────────────────┐
+│         Claude Desktop Application              │
+└──────────────────┬──────────────────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────────────────┐
+│   Tenable Security MCP Server (Python)          │
+└──┬─────────────┬──────────────┬────────────────┐
+   │             │              │                │
+   ▼             ▼              ▼                ▼
+Nessus      NVD/CVE        EPSS/CISA        Exploit
+(Local)     (Public)       (Public)         Intelligence
 ```
 
-**Key Design Principle**: Nessus remains local and never needs public internet exposure. The MCP server handles all external API calls.
+### 🔒 Security Design
+- 🟢 **Nessus stays local** - No public internet exposure required
+- 🟢 **MCP handles external APIs** - Isolated API credential management
+- 🟢 **Zero trust** - All data validated and contextualized
+- 🟢 **Analyst-in-the-loop** - AI assists, humans decide
 
 ---
 
-## Getting Started
+## 🚀 Quick Start
 
-### Prerequisites
-- Claude Desktop
-- Nessus Essentials or Professional/Expert
-- Nessus API access and secret keys
-- Git
+### 📦 Prerequisites
+- ✅ Claude Desktop (latest version)
+- ✅ Nessus Essentials or Professional/Expert
+- ✅ Nessus API keys (access key + secret key)
+- ✅ Git installed
 
 ---
 
-## Installation
+## 🔧 Installation Guide
 
-### Step 1: Clone the Repository
-
+### **Step 1️⃣: Clone Repository**
 ```bash
 git clone https://github.com/kasireddy-sec/tenable-security-mcp.git
 cd tenable-security-mcp
 ```
 
-### Step 2: Build the Extension
+### **Step 2️⃣: Build Extension**
 
-The project uses GitHub Actions to automatically build the `.mcpb` extension artifact.
-
-**Option A: Use GitHub Actions (Recommended)**
-
-1. Push your changes to GitHub (or trigger manually)
-2. Go to: **Actions** → **build.yml** workflow
+#### **Option A: GitHub Actions (Recommended) ⭐**
+1. Push changes to GitHub (or trigger manually)
+2. Navigate to: **Actions → build.yml**
 3. Click **Run workflow**
-4. Wait for the build to complete (2-3 minutes)
-5. Download the `extension.mcpb` artifact from the workflow run
+4. Wait for completion (2-3 minutes)
+5. Download `extension.mcpb` artifact
 
-**Option B: Build Locally**
-
+#### **Option B: Local Build**
 ```bash
 # Install MCP build tools
 pip install -r requirements.txt
@@ -145,236 +114,252 @@ pip install -r requirements.txt
 # Build the extension
 mcp build
 
-# The extension.mcpb will be generated in dist/
+# Verify output
 ls dist/extension.mcpb
 ```
 
-### Step 3: Install into Claude Desktop
+### **Step 3️⃣: Install to Claude Desktop**
+1. Open **Claude Desktop**
+2. Navigate to: **Settings → Extensions → Advanced Settings**
+3. Click **Install Extension**
+4. Select `extension.mcpb` file
+5. Enable the extension
 
-1. Open Claude Desktop
-2. Go to: **Settings** → **Extensions** → **Advanced Settings** → **Install Extension**
-3. Select the `extension.mcpb` file (from Step 2)
-4. Enable the extension
-
-### Step 4: Configure Nessus
-
-1. Go to: **Settings** → **Extensions** → **Tenable Security MCP** → **Configure**
-2. Enter:
+### **Step 4️⃣: Configure Nessus**
+1. Go to: **Settings → Extensions → Tenable Security MCP**
+2. Click **Configure** and enter:
    - **Nessus URL**: `https://localhost:8834`
-   - **API Access Key**: Your Nessus API key
-   - **API Secret Key**: Your Nessus API secret
+   - **API Access Key**: `your_access_key_here`
+   - **API Secret Key**: `your_secret_key_here`
 
-### Step 5: Verify Installation
-
-Open Claude and run:
-```
+### **Step 5️⃣: Verify Installation**
+```bash
+# In Claude Desktop, test with:
 "Get my Nessus server information"
 ```
 
-Claude should return live data from your Nessus instance.
+✅ You should receive live Nessus data!
 
 ---
 
-## Workflow: Clone → Build → Install
+## 📊 Practical Security Workflows
 
-```
-Clone Repository
-    ↓
-git clone https://github.com/kasireddy-sec/tenable-security-mcp.git
-    ↓
-Trigger GitHub Actions (or build locally)
-    ↓
-mcp build  (or Actions workflow)
-    ↓
-Download extension.mcpb artifact
-    ↓
-Install into Claude Desktop
-    ↓
-Configure Nessus credentials
-    ↓
-Start using with Claude
-```
-
----
-
-## Practical Workflows
-
-### Scan Analysis
+### 🔴 Critical Incident Response
 ```
 "Analyze my latest scan and list critical findings with affected hosts"
 ```
+→ Immediate visibility into high-risk assets
 
-### CVE Intelligence
+### 🔍 CVE Deep Dive
 ```
 "Get complete intelligence for CVE-2024-3094: CVSS, EPSS, CISA KEV, and exploit status"
 ```
+→ Comprehensive threat context in seconds
 
-### Risk Prioritization
+### 📈 Smart Prioritization
 ```
-"Which 5 vulnerabilities in my scan pose the highest risk based on EPSS, exploitability, and asset criticality?"
+"Which 5 vulnerabilities pose highest risk based on EPSS, exploitability, and asset criticality?"
 ```
+→ Data-driven remediation sequencing
 
-### Coverage Assessment
+### 🗓️ Coverage Assessment
 ```
 "Identify assets that haven't been scanned in the last 7 days"
 ```
+→ Risk visibility across your estate
 
-### Remediation Planning
+### 🛠️ Remediation Planning
 ```
-"Create a prioritized remediation roadmap for findings above CVSS 7.0 with CISA KEV or public exploits"
+"Create a prioritized roadmap for findings above CVSS 7.0 with CISA KEV or public exploits"
 ```
+→ Structured remediation strategy
 
 ---
 
-## Technology Stack
+## 🏢 Technology Stack
 
-- **Language**: Python 3.9+
-- **MCP Framework**: MCP Python SDK
-- **Transport**: HTTP/HTTPS
-- **APIs Integrated**:
-  - Nessus REST API
-  - National Vulnerability Database (NVD)
-  - CISA Known Exploited Vulnerabilities
-  - EPSS (Exploit Prediction Scoring System)
-  - Public exploit intelligence sources
+| Component | Technology |
+|-----------|-----------|
+| **Language** | Python 3.9+ |
+| **Framework** | MCP Python SDK |
+| **Transport** | HTTPS/REST |
+| **APIs** | Nessus, NVD, EPSS, CISA KEV, Exploit Intelligence |
+| **Build Tool** | GitHub Actions + MCP Build |
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 tenable-security-mcp/
-├── .github/workflows/
-│   ├── test.yml          # Automated testing
-│   └── build.yml         # MCPB packaging & release
-├── extension/
-│   ├── manifest.json     # Extension metadata
-│   ├── pyproject.toml    # Dependencies & config
-│   └── src/server.py     # MCP server implementation
-├── pyproject.toml
-└── README.md
-```
-
-The GitHub Actions workflow automatically builds the `.mcpb` artifact from the `extension/` directory.
-
----
-
-## Build Pipeline
-
-```
-Push to GitHub
-    ↓
-GitHub Actions Triggered
-    ├── Run Tests
-    └── Build MCPB
-        ↓
-    Artifact Created (extension.mcpb)
-        ↓
-    User Downloads from Workflow Run
-        ↓
-    Installs into Claude Desktop
+├── 📂 .github/workflows/
+│   ├── test.yml              # Automated testing pipeline
+│   └── build.yml             # MCPB packaging & release
+├── 📂 extension/
+│   ├── manifest.json         # Extension metadata
+│   ├── pyproject.toml        # Dependencies & configuration
+│   └── 📂 src/
+│       └── server.py         # MCP server implementation
+├── pyproject.toml            # Project configuration
+└── README.md                 # This file
 ```
 
 ---
 
-## ⚠️ Known Installation Issues
+## 🔄 Build & Release Pipeline
 
-### Windows MSIX Installation Issue
+```
+┌─────────────────────────────────────────────────┐
+│       Developer Pushes to GitHub                │
+└────────────────────┬────────────────────────────┘
+                     │
+                     ▼
+        ┌────────────────────────────┐
+        │  GitHub Actions Triggered  │
+        └────┬───────────────────┬───┘
+             │                   │
+             ▼                   ▼
+        ┌──────────┐      ┌──────────────┐
+        │Run Tests │      │ Build MCPB   │
+        └──────────┘      └──────┬───────┘
+                                 │
+                     ┌───────────▼────────────┐
+                     │ extension.mcpb Created │
+                     └───────────┬────────────┘
+                                 │
+                     ┌───────────▼───────────────┐
+                     │ Download from Workflow    │
+                     │ Install to Claude        │
+                     └──────────────────────────┘
+```
 
-**Problem**: When using the MSIX/enterprise installation of Claude Desktop, the extension may fail with:
+---
+
+## ⚠️ Known Issues & Solutions
+
+### 🪟 Windows MSIX Installation Issue
+
+**Problem:**
 ```
 can't open file ... src/server.py
 [Errno 2] No such file or directory
 ```
 
-**Cause**: MSIX resolves the MCP server's execution path incorrectly, even though extension files are present.
+**Root Cause:** MSIX resolves MCP server paths incorrectly
 
-**Solution**: Use the **standard Claude Desktop installer** instead of MSIX/enterprise package for individual Windows users.
+**Solution:** Use standard Claude Desktop installer (not MSIX/enterprise)
 
-**Flow that fails**:
+✅ **Recommended**: Standard installer for Windows users
+
+### 🐍 UV / Python Permission Denied
+
+**Problem:**
 ```
-MSIX Installation
-    ↓
-UV Environment Created
-    ↓
-Dependencies Installed
-    ↓
-Server Files Present
-    ↓
-Incorrect Windows Path Resolution
-    ↓
-MCP Server Fails to Start
+Access is denied (installing dependencies)
 ```
 
-**Do not add Windows-specific paths** like `C:\Users\<username>\` to the project. The `.mcpb` package must remain portable across systems.
+**Root Cause:** Microsoft Store Python has restricted write permissions
+
+**Solution:** Extension uses isolated user-level UV environment
+
+✅ **No manual action needed** - automatic fallback enabled
 
 ---
 
-### UV / Python Permission Issue
+## 🔒 Security Best Practices
 
-**Problem**: UV fails to install dependencies into protected Microsoft Store Python installations with:
-```
-Access is denied
-```
+### ✅ **DO**
+- 🟢 Store Nessus API credentials in configuration (never commit to repo)
+- 🟢 Use standard Claude Desktop installer
+- 🟢 Validate Claude's recommendations before production changes
+- 🟢 Treat exploit intelligence as supporting evidence
+- 🟢 Maintain audit logs of all vulnerability assessments
 
-**Cause**: Microsoft Store Python has restricted write permissions.
-
-**Solution**: The extension is configured to use an isolated user-level UV environment instead.
-
-**Runtime Model**:
-```
-Claude Desktop
-    ↓
-UV Runtime
-    ↓
-User-level Python Environment
-    ↓
-MCP Dependencies
-    ↓
-Tenable Security MCP
-```
-
-Users should not need to manually create or manage this environment.
+### ❌ **DON'T**
+- 🔴 Commit API credentials to GitHub
+- 🔴 Expose local Nessus to public internet
+- 🔴 Scan systems without proper authorization
+- 🔴 Treat AI recommendations as definitive without analyst review
+- 🔴 Share sensitive finding details in untrusted environments
 
 ---
 
-## Security & Best Practices
+## 🤝 Contributing
 
-✅ **Do**
-- Keep Nessus API credentials in configuration (not code)
-- Use the standard Claude Desktop installer
-- Validate Claude's recommendations before production action
-- Treat exploit intelligence as supporting evidence, not proof
+We welcome contributions from the security community!
 
-❌ **Don't**
-- Commit API credentials to GitHub
-- Expose local Nessus to the public internet
-- Scan systems you don't have authorization for
-- Treat AI recommendations as definitive without analyst review
+### Development Workflow
+```bash
+# 1. Fork repository
+git clone https://github.com/YOUR-USERNAME/tenable-security-mcp.git
+
+# 2. Create feature branch
+git checkout -b feature/your-feature-name
+
+# 3. Make changes to extension/src/server.py
+# ... your code changes ...
+
+# 4. Test locally
+mcp build
+mcp run
+
+# 5. Commit and push
+git add .
+git commit -m "Add: your feature description"
+git push origin feature/your-feature-name
+
+# 6. Submit Pull Request
+# GitHub Actions will automatically build and test
+```
+
+**Contribution Guidelines:**
+- 📋 Follow Python PEP 8 style guide
+- 🧪 Include test cases for new features
+- 📝 Update documentation
+- ✅ Ensure GitHub Actions passes all checks
 
 ---
 
-## Contributing
+## 📄 License
 
-This is an open-source project. Contributions welcome:
+**MIT License** - Open source and free to use
 
-1. Fork the repository
-2. Create a feature branch
-3. Make changes to `extension/src/server.py`
-4. Test locally with `mcp build && mcp run`
-5. Commit and push
-6. Submit a pull request
-
-The GitHub Actions workflow will automatically build and test your changes.
+See [LICENSE](LICENSE) file for complete details
 
 ---
 
-## License
+## 🎯 Vision
 
-MIT License - see [LICENSE](LICENSE) file for details.
+**Transform vulnerability management from reactive firefighting to strategic risk management.**
+
+- 🔍 **Faster Analysis** - Minutes instead of hours
+- 💡 **Better Decisions** - AI-assisted prioritization
+- 📉 **Reduced Risk** - Intelligent remediation
+- ⏱️ **Increased Velocity** - Automate the routine
 
 ---
 
-**Built to turn raw Nessus findings into actionable security intelligence using MCP and AI.**
+## 📞 Support & Resources
 
-🔍 **Tenable Security MCP** → Faster Analysis → Better Decisions → Reduced Risk
+| Resource | Link |
+|----------|------|
+| **GitHub Issues** | [Report Bug / Request Feature](../../issues) |
+| **Documentation** | README.md (you are here) |
+| **Tenable Docs** | [Nessus API Reference](https://docs.tenable.com/nessus) |
+| **CISA KEV** | [Known Exploited Vulnerabilities](https://cisa.gov/known-exploited-vulnerabilities) |
+| **EPSS** | [Exploit Prediction Scoring System](https://www.first.org/epss) |
+
+---
+
+<div align="center">
+
+### 🚀 Built to Turn Raw Nessus Findings into Actionable Security Intelligence
+
+**Tenable Security MCP** → Faster Analysis → Better Decisions → Reduced Risk
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+
+**Made for Security Professionals | Built on MCP | Powered by Claude AI**
+
+</div>
