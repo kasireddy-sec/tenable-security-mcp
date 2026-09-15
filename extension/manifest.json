@@ -9,26 +9,17 @@
   },
   "server": {
     "type": "uv",
-    "entry_point": "server.py"
-  },
-  "tools": [
-    {
-      "name": "get_nessus_server_info",
-      "description": "Get basic information about the Nessus server."
-    },
-    {
-      "name": "list_nessus_scans",
-      "description": "List configured Nessus scans."
-    },
-    {
-      "name": "get_nessus_scan_status",
-      "description": "Get the current status of a Nessus scan."
-    },
-    {
-      "name": "get_nessus_scan_details",
-      "description": "Get details and results for a Nessus scan."
+    "entry_point": "server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "server.py"
+      ]
     }
-  ],
+  },
   "user_config": {
     "nessus_url": {
       "type": "string",
