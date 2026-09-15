@@ -16,7 +16,7 @@
         "run",
         "--directory",
         "${__dirname}",
-        "server.py"
+        "src/server.py"
       ],
       "env": {
         "NESSUS_URL": "${user_config.nessus_url}",
