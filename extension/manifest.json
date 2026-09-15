@@ -1,0 +1,55 @@
+{
+  "manifest_version": "0.4",
+  "name": "tenable-security-mcp",
+  "display_name": "Tenable Security MCP",
+  "version": "1.0.0",
+  "description": "Unified MCP server for Claude Desktop that connects to Nessus and Tenable Vulnerability Management.",
+  "author": {
+    "name": "Thanuj"
+  },
+  "server": {
+    "type": "uv",
+    "entry_point": "server.py"
+  },
+  "tools": [
+    {
+      "name": "get_nessus_server_info",
+      "description": "Get basic information about the Nessus server."
+    },
+    {
+      "name": "list_nessus_scans",
+      "description": "List configured Nessus scans."
+    },
+    {
+      "name": "get_nessus_scan_status",
+      "description": "Get the current status of a Nessus scan."
+    },
+    {
+      "name": "get_nessus_scan_details",
+      "description": "Get details and results for a Nessus scan."
+    }
+  ],
+  "user_config": {
+    "nessus_url": {
+      "type": "string",
+      "title": "Nessus Server URL",
+      "description": "Nessus server URL, for example https://localhost:8834",
+      "default": "https://localhost:8834",
+      "required": true
+    },
+    "nessus_access_key": {
+      "type": "string",
+      "title": "Nessus Access Key",
+      "description": "Nessus REST API access key.",
+      "required": true,
+      "sensitive": true
+    },
+    "nessus_secret_key": {
+      "type": "string",
+      "title": "Nessus Secret Key",
+      "description": "Nessus REST API secret key.",
+      "required": true,
+      "sensitive": true
+    }
+  }
+}
