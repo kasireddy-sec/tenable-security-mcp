@@ -2,7 +2,7 @@
 
 **AI-Assisted Vulnerability Management with Claude Desktop**
 
-Tenable Security MCP is an MCP (Model Context Protocol) server that connects Claude Desktop with Tenable Nessus and security intelligence sources, enabling vulnerability management teams to interact with vulnerability data using natural language.
+Tenable Security MCP is an MCP (Model Context Protocol) server that connects Claude Desktop with Tenable Nessus and security intelligence sources, enabling vulnerability management teams to interac[...]
 
 Instead of manually switching between Nessus, CVE databases, EPSS, CISA KEV, and exploit intelligence sources, ask Claude:
 
@@ -128,15 +128,24 @@ cd tenable-security-mcp
 
 The project uses GitHub Actions to automatically build the `.mcpb` extension artifact.
 
-**Option A: Use GitHub Actions (Recommended)**
+✅ Option A — Use GitHub Actions (Recommended) 🚀
 
-1. Push your changes to GitHub (or trigger manually)
-2. Go to: **Actions** → **build.yml** workflow
-3. Click **Run workflow**
-4. Wait for the build to complete (2-3 minutes)
-5. Download the `extension.mcpb` artifact from the workflow run
+1. Push your changes or any branch to GitHub (if you made local edits):
+   - git add -A && git commit -m "update" && git push origin your-branch
+2. Go to the repository on GitHub → Click "Actions" in the top menu.
+3. Select the "build.yml" workflow from the list.
+4. Click the green "Run workflow" button and choose the branch to run on (default is main).  
+   - Tip: This runs tests and builds the extension automatically.
+5. Wait a few minutes for the workflow to complete. You’ll see the run progress and logs in the Actions UI.
+6. When the run finishes, expand the "Artifacts" section and download extension.mcpb. 🎉
+   - The artifact will be named `extension.mcpb` and is available directly from the workflow run page.
 
-**Option B: Build Locally**
+Why this is recommended:
+- Zero local setup required ✅
+- Reproducible builds and CI logs ✅
+- Easy artifact download from the web UI ✅
+
+🔧 Option B — Build Locally (for advanced users)
 
 ```bash
 # Install MCP build tools
@@ -154,7 +163,7 @@ ls dist/extension.mcpb
 1. Open Claude Desktop
 2. Go to: **Settings** → **Extensions** → **Advanced Settings** → **Install Extension**
 3. Select the `extension.mcpb` file (from Step 2)
-4. Enable the extension
+4. Enable the extension ✅
 
 ### Step 4: Configure Nessus
 
