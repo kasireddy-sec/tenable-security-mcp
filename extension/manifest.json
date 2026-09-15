@@ -17,7 +17,12 @@
         "--directory",
         "${__dirname}",
         "server.py"
-      ]
+      ],
+      "env": {
+        "NESSUS_URL": "${user_config.nessus_url}",
+        "NESSUS_ACCESS_KEY": "${user_config.nessus_access_key}",
+        "NESSUS_SECRET_KEY": "${user_config.nessus_secret_key}"
+      }
     }
   },
   "user_config": {
