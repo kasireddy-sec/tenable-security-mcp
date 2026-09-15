@@ -111,30 +111,88 @@ Claude Response
 - Claude Desktop
 - Nessus Essentials or Professional/Expert
 - Nessus API access and secret keys
-- `extension.mcpb` artifact
+- Git
 
-**No need to clone, configure Python, manage environments, or manually start services.**
+---
 
-### Installation (3 Steps)
+## Installation
 
-**Step 1: Download**
-- Get `extension.mcpb` from [GitHub Releases](https://github.com/kasireddy-sec/tenable-security-mcp/releases)
+### Step 1: Clone the Repository
 
-**Step 2: Install**
-- Open Claude Desktop → Settings → Extensions → Advanced Settings → Install Extension
-- Select the downloaded `extension.mcpb`
-
-**Step 3: Configure**
-- Settings → Extensions → Tenable Security MCP → Configure
-- Enter:
-  - Nessus URL: `https://localhost:8834`
-  - API Access Key
-  - API Secret Key
-
-### Verify Installation
+```bash
+git clone https://github.com/kasireddy-sec/tenable-security-mcp.git
+cd tenable-security-mcp
 ```
-User: "Get my Nessus server information"
-Claude: [Returns live Nessus data]
+
+### Step 2: Build the Extension
+
+The project uses GitHub Actions to automatically build the `.mcpb` extension artifact.
+
+**Option A: Use GitHub Actions (Recommended)**
+
+1. Push your changes to GitHub (or trigger manually)
+2. Go to: **Actions** → **build.yml** workflow
+3. Click **Run workflow**
+4. Wait for the build to complete (2-3 minutes)
+5. Download the `extension.mcpb` artifact from the workflow run
+
+**Option B: Build Locally**
+
+```bash
+# Install MCP build tools
+pip install -r requirements.txt
+
+# Build the extension
+mcp build
+
+# The extension.mcpb will be generated in dist/
+ls dist/extension.mcpb
+```
+
+### Step 3: Install into Claude Desktop
+
+1. Open Claude Desktop
+2. Go to: **Settings** → **Extensions** → **Advanced Settings** → **Install Extension**
+3. Select the `extension.mcpb` file (from Step 2)
+4. Enable the extension
+
+### Step 4: Configure Nessus
+
+1. Go to: **Settings** → **Extensions** → **Tenable Security MCP** → **Configure**
+2. Enter:
+   - **Nessus URL**: `https://localhost:8834`
+   - **API Access Key**: Your Nessus API key
+   - **API Secret Key**: Your Nessus API secret
+
+### Step 5: Verify Installation
+
+Open Claude and run:
+```
+"Get my Nessus server information"
+```
+
+Claude should return live data from your Nessus instance.
+
+---
+
+## Workflow: Clone → Build → Install
+
+```
+Clone Repository
+    ↓
+git clone https://github.com/kasireddy-sec/tenable-security-mcp.git
+    ↓
+Trigger GitHub Actions (or build locally)
+    ↓
+mcp build  (or Actions workflow)
+    ↓
+Download extension.mcpb artifact
+    ↓
+Install into Claude Desktop
+    ↓
+Configure Nessus credentials
+    ↓
+Start using with Claude
 ```
 
 ---
@@ -168,9 +226,8 @@ Claude: [Returns live Nessus data]
 
 ---
 
-## How It Works Under the Hood
+## Technology Stack
 
-### Technology Stack
 - **Language**: Python 3.9+
 - **MCP Framework**: MCP Python SDK
 - **Transport**: HTTP/HTTPS
@@ -181,24 +238,103 @@ Claude: [Returns live Nessus data]
   - EPSS (Exploit Prediction Scoring System)
   - Public exploit intelligence sources
 
-### Extension Distribution
+---
+
+## Project Structure
+
 ```
-Python MCP Server → MCPB Package → Claude Desktop Extension → Users
+tenable-security-mcp/
+├── .github/workflows/
+│   ├── test.yml          # Automated testing
+│   └── build.yml         # MCPB packaging & release
+├── extension/
+│   ├── manifest.json     # Extension metadata
+│   ├── pyproject.toml    # Dependencies & config
+│   └── src/server.py     # MCP server implementation
+├── pyproject.toml
+└── README.md
 ```
 
-The `.mcpb` format encapsulates the server runtime, dependencies, and configuration—users just download and install.
+The GitHub Actions workflow automatically builds the `.mcpb` artifact from the `extension/` directory.
 
 ---
 
-## Windows Considerations
+## Build Pipeline
 
-### Standard Installation
-Use the standard Claude Desktop installer (not MSIX/Enterprise package) for individual Windows users.
+```
+Push to GitHub
+    ↓
+GitHub Actions Triggered
+    ├── Run Tests
+    └── Build MCPB
+        ↓
+    Artifact Created (extension.mcpb)
+        ↓
+    User Downloads from Workflow Run
+        ↓
+    Installs into Claude Desktop
+```
 
-### Automatic Environment Management
-- UV runtime handles Python environment isolation
-- Dependencies install to user-level environment
-- No manual Python setup required
+---
+
+## ⚠️ Known Installation Issues
+
+### Windows MSIX Installation Issue
+
+**Problem**: When using the MSIX/enterprise installation of Claude Desktop, the extension may fail with:
+```
+can't open file ... src/server.py
+[Errno 2] No such file or directory
+```
+
+**Cause**: MSIX resolves the MCP server's execution path incorrectly, even though extension files are present.
+
+**Solution**: Use the **standard Claude Desktop installer** instead of MSIX/enterprise package for individual Windows users.
+
+**Flow that fails**:
+```
+MSIX Installation
+    ↓
+UV Environment Created
+    ↓
+Dependencies Installed
+    ↓
+Server Files Present
+    ↓
+Incorrect Windows Path Resolution
+    ↓
+MCP Server Fails to Start
+```
+
+**Do not add Windows-specific paths** like `C:\Users\<username>\` to the project. The `.mcpb` package must remain portable across systems.
+
+---
+
+### UV / Python Permission Issue
+
+**Problem**: UV fails to install dependencies into protected Microsoft Store Python installations with:
+```
+Access is denied
+```
+
+**Cause**: Microsoft Store Python has restricted write permissions.
+
+**Solution**: The extension is configured to use an isolated user-level UV environment instead.
+
+**Runtime Model**:
+```
+Claude Desktop
+    ↓
+UV Runtime
+    ↓
+User-level Python Environment
+    ↓
+MCP Dependencies
+    ↓
+Tenable Security MCP
+```
+
+Users should not need to manually create or manage this environment.
 
 ---
 
@@ -218,65 +354,6 @@ Use the standard Claude Desktop installer (not MSIX/Enterprise package) for indi
 
 ---
 
-## Project Structure
-
-```
-tenable-security-mcp/
-├── .github/workflows/
-│   ├── test.yml          # Automated testing
-│   └── build.yml         # MCPB packaging & release
-├── extension/
-│   ├── manifest.json     # Extension metadata
-│   ├── pyproject.toml    # Dependencies & config
-│   └── src/server.py     # MCP server implementation
-├── pyproject.toml
-└── README.md
-```
-
-The extension builds into a single `extension.mcpb` artifact for distribution.
-
----
-
-## Build & Release Pipeline
-
-```
-Code Push → GitHub Actions
-           ├── Run Tests
-           └── Build MCPB
-               ↓
-           GitHub Release
-               ↓
-           extension.mcpb (downloadable artifact)
-               ↓
-           Users: Download → Install → Use
-```
-
-Updates flow seamlessly: modify code → push → new artifact → users download updated extension.
-
----
-
-## Future Capabilities
-
-- **Tenable Cloud Support**: Extend to Tenable Vulnerability Management / Tenable Cloud
-- **Multi-Scanner**: Support additional vulnerability scanners
-- **Automated Workflows**: Trigger remediation actions directly from Claude
-- **Custom Intelligence**: Integrate proprietary threat feeds
-- **Team Collaboration**: Share prioritization and remediation plans
-
----
-
-## Why This Approach
-
-| Traditional | Tenable Security MCP |
-|---|---|
-| Manual switching between 5+ systems | Single natural language interface |
-| 15-20 min per vulnerability assessment | 2-3 min with AI correlation |
-| Copy/paste data across platforms | Automatic intelligence aggregation |
-| Repetitive research | Focus on validation & decisions |
-| Individual analyst workflow | Team-aligned prioritization |
-
----
-
 ## Contributing
 
 This is an open-source project. Contributions welcome:
@@ -284,22 +361,11 @@ This is an open-source project. Contributions welcome:
 1. Fork the repository
 2. Create a feature branch
 3. Make changes to `extension/src/server.py`
-4. Test locally
-5. Submit a pull request
+4. Test locally with `mcp build && mcp run`
+5. Commit and push
+6. Submit a pull request
 
----
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/kasireddy-sec/tenable-security-mcp/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/kasireddy-sec/tenable-security-mcp/discussions)
-- **Documentation**: See docs/ directory
-
----
-
-## Disclaimer
-
-This tool is for authorized vulnerability assessments only. Ensure you have proper authorization before accessing any Nessus or Tenable infrastructure. Unauthorized access to security tools and vulnerability data may violate laws and regulations.
+The GitHub Actions workflow will automatically build and test your changes.
 
 ---
 
