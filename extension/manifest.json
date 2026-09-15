@@ -9,7 +9,22 @@
   },
   "server": {
     "type": "uv",
-    "entry_point": "src/server.py"
+    "entry_point": "src/server.py",
+    "mcp_config": {
+      "command": "uv",
+      "args": [
+        "run",
+        "--directory",
+        "${__dirname}",
+        "src/server.py"
+      ],
+      "env": {
+        "NESSUS_URL": "${user_config.nessus_url}",
+        "NESSUS_ACCESS_KEY": "${user_config.nessus_access_key}",
+        "NESSUS_SECRET_KEY": "${user_config.nessus_secret_key}",
+        "UV_PROJECT_ENVIRONMENT": "${HOME}/.tenable-security-mcp-venv"
+      }
+    }
   },
   "user_config": {
     "nessus_url": {
